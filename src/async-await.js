@@ -1,11 +1,12 @@
 
 const add = (a, b) => {
-    return new Promise((resole, reject) => {
+    return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if ( a < 0 || b < 0) {
-                return reject('numbers must be non-negative');
+            if (a < 0 || b < 0) {
+                return reject('Numbers must be non-negative')
             }
-            resolve(a + b);
+
+            resolve(a + b)
         }, 2000)
     })
 }
