@@ -1,2 +1,2 @@
-# task-app
+# Task Application
 Simple task app
