@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const User = require('../../src/models/user');
 const Task = require('../../src/models/tasks');
 const { MongoServerSelectionError } = require('mongodb');
+const config = require('../../config/config');
 
 const userOneId = new mongoose.Types.ObjectId();
 const userOne = {
@@ -11,7 +12,7 @@ const userOne = {
     email: 'mike@example.com',
     password: 'pass234234',
     tokens: [{
-        token: jwt.sign({ _id: userOneId}, process.env.JWT_SECRET)
+        token: jwt.sign({ _id: userOneId}, config.jwt_secret)
     }]
 }
 
@@ -22,7 +23,7 @@ const userTwo = {
     email: 'jongo@example.com',
     password: 'asdf1234asdf',
     tokens: [{
-        token: jwt.sign({ _id: userTwoId}, process.env.JWT_SECRET)
+        token: jwt.sign({ _id: userTwoId}, config.jwt_secret)
     }]
 }
 
