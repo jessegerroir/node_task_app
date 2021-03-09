@@ -7,6 +7,8 @@ const Task = require('../models/tasks');
 const auth = require('../middleware/auth');
 const { request } = require('express');
 
+
+
 router.post('/tasks', auth, async (request, response) => {
 
     // Add owner id to task
@@ -22,6 +24,7 @@ router.post('/tasks', auth, async (request, response) => {
         response.status(400).send(error);
     }
 });
+
 
 // GET /tasks?completed=true
 // GET /tasks?limit=10&skip=20
@@ -59,6 +62,7 @@ router.get('/tasks/', auth, async (request, response) => {
         response.status(500).send(error);
     }
 });
+
 
 router.get('/tasks/:id', auth, async (request, response) => {
     const _id = request.params.id;

@@ -6,6 +6,7 @@ const User = require('../src/models/user')
 const { userOneId, userOne, setupDatabase } = require('./fixtures/db');
 beforeEach(setupDatabase);
 
+
 test('Should sign up new user', async () => {
     const response = await request(app).post('/users').send({
         name: 'Jimbo',
@@ -29,6 +30,7 @@ test('Should sign up new user', async () => {
     expect(user.password).not.toBe('MyPass777!');
 })
 
+
 test('should login existing user', async () => {
     const response = await request(app).get('/users/login').send({
         email: userOne.email,
@@ -39,12 +41,14 @@ test('should login existing user', async () => {
     expect(response.body.token).toBe(user.tokens[1].token);
 })
 
+
 test('should not login non-existant user', async () => {
     await request(app).get('/users/login').send({
         email: userOne.email,
         password: 'fake password'
     }).expect(400)
 })
+
 
 test('Should get profile for user', async () => {
     await request(app)
@@ -53,6 +57,7 @@ test('Should get profile for user', async () => {
         .send()
         .expect(200);
 })
+
 
 test('should delete account', async () => {
     await request(app)
@@ -65,12 +70,14 @@ test('should delete account', async () => {
     expect(user).toBeNull();
 })
 
+
 test('should not delete account', async () => {
     await request(app)
     .delete('/users/me')
     .send()
     .expect(401)
 })
+
 
 test('should upload avatar', async () => {
     await request(app)
@@ -82,6 +89,7 @@ test('should upload avatar', async () => {
     const user = await User.findById(userOneId);
     expect(user.avatar).toEqual(expect.any(Buffer))
 })
+
 
 test('should update valid user fields', async () => {
     await request(app)
@@ -95,6 +103,7 @@ test('should update valid user fields', async () => {
     expect(user.name).toEqual('Godfrey');
 
 });
+
 
 test('should not update invalid user fields', async () => {
     const response = await request(app)

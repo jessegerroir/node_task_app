@@ -2,38 +2,36 @@ const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 const multer = require('multer');
-const sharp = require('sharp');
-const { sendWelcomeEmail, sendCancelEamil } = require('../emails/account');
+
+const imageProcessing = require('./../utils/image_processing');
+
 const router = new express.Router();
 
-const upload = multer({
-    limits: {
-        fileSize: 1000000
-    },
-    fileFilter(request, file, callback) {
+// const upload = multer({
+//     limits: {
+//         fileSize: 1000000
+//     },
+//     fileFilter(request, file, callback) {
 
-        // check file extension
-        if (!file.originalname.match(/\.(jpeg|jpg|png)$/)) {
-            // send back error
-            return callback(new Error('Please upload a jpg, jpeg, or png image'));
-        }
+//         // check file extension
+//         if (!file.originalname.match(/\.(jpeg|jpg|png)$/)) {
+//             // send back error
+//             return callback(new Error('Please upload a jpg, jpeg, or png image'));
+//         }
 
-        // upload went successful
-        return callback(undefined, true);
-    }
-});
+//         // upload went successful
+//         return callback(undefined, true);
+//     }
+// });
 
 
-// We're defining our requests
+// Create user 
 router.post('/users', async (request, response) => {
     
     // Create new user based on posted data
     const user = new User(request.body);
     try {
         await user.save();
-
-        // call welcome email function
-        sendWelcomeEmail(user.email, user.name);
 
         const token = await user.generateAuthToken();
         response.status(201).send({user, token});
@@ -42,6 +40,7 @@ router.post('/users', async (request, response) => {
     }
 });
 
+// Login User
 router.get('/users/login', async (request, response) => {
     try {
         const user = await User.findByCredentials(request.body.email, request.body.password);
@@ -52,7 +51,22 @@ router.get('/users/login', async (request, response) => {
     }
 });
 
+// Logout all user sessions
+router.get('/users/logoutAll', async (request, response) => {
+    try {
+        // wipe all tokens by setting to empty array
+        request.user.tokens = [];
+        // save user
+        await request.user.save();
+    } catch (error) {
+        response.status(400).send(error);
+    }
+});
 
+
+// ----- Everything below this requires the user to be signed in ----- //
+
+// Logout User
 router.post('/users/logout', auth, async (request, response) => {
     try {
         // get all the tokens saved to the user
@@ -68,37 +82,13 @@ router.post('/users/logout', auth, async (request, response) => {
     }
 });
 
-router.get('/users/logoutAll', async (request, response) => {
-    try {
-        // wipe all tokens by setting to empty array
-        request.user.tokens = [];
-        // save user
-        await request.user.save();
-    } catch (error) {
-        response.status(400).send(error);
-    }
-});
-
-
+// Get user info 
 router.get('/users/me', auth, async (request, response) => {
     response.send(request.user);
 });
 
-// router.get('/users/:id', async (request, response) => {
-    
-//     const _id = request.params.id;
 
-//     try {
-//         const user = await User.findById(_id);
-//         if (!user) {
-//             return response.status(404).send();
-//         }
-//         response.send(user);
-//     } catch (error) {
-//         response.status(500).send();
-//     }
-// });
-
+// Update user info 
 router.patch('/users/me', auth, async (request, response) => {
     const updates = Object.keys(request.body);
     const allowedUpdates = ['name', 'email', 'password'];
@@ -120,15 +110,10 @@ router.patch('/users/me', auth, async (request, response) => {
     }
 });
 
-
+// Delete User 
 router.delete('/users/me', auth, async (request, response) => {
     try {
-
-        // call welcome email function
-        sendCancelEamil(request.user.email, request.user.name);
-
         await request.user.remove();
-
         response.send(request.user);
     } catch (error) {
         response.status(500).send();
@@ -136,12 +121,13 @@ router.delete('/users/me', auth, async (request, response) => {
 });
 
 
-router.post('/users/me/avatar', auth, upload.single('avatar'), async (request, response) => {
+// Upload user avatar 
+router.post('/users/me/avatar', auth, imageProcessing.upload.single('avatar'), async (request, response) => {
     
     // add the image binary to the user avatar field
 
-    // Use sharp to resize and reformat image
-    const buffer = await sharp(request.file.buffer).resize({ width: 250, height: 250}).png().toBuffer();
+    // Resize image
+    const buffer = await imageProcessing.resize(request.file.buffer);    
 
     // set value of avatar field 
     request.user.avatar = buffer;
@@ -154,6 +140,7 @@ router.post('/users/me/avatar', auth, upload.single('avatar'), async (request, r
     result.status(400).send({ error: error.message })
 });
 
+// Delete users avatar 
 router.delete('/users/me/avatar', auth, async (request, response) => {
     // set users avatar value to undefined
     request.user.avatar = undefined;
@@ -163,6 +150,7 @@ router.delete('/users/me/avatar', auth, async (request, response) => {
     response.send();
 });
 
+// Get avatar of specific user (does not require login)
 router.get('/users/:id/avatar', async (request, response) => {
     try {
         const user = await User.findById(request.params.id);
@@ -179,4 +167,6 @@ router.get('/users/:id/avatar', async (request, response) => {
     }
 })
 
+
+// Export all the routes
 module.exports = router;

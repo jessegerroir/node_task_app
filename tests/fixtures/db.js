@@ -5,6 +5,7 @@ const Task = require('../../src/models/tasks');
 const { MongoServerSelectionError } = require('mongodb');
 const config = require('../../config/config');
 
+// User 1 test information 
 const userOneId = new mongoose.Types.ObjectId();
 const userOne = {
     _id: userOneId,
@@ -16,6 +17,7 @@ const userOne = {
     }]
 }
 
+// User 2 test information 
 const userTwoId = new mongoose.Types.ObjectId();
 const userTwo = {
     _id: userTwoId,
@@ -27,6 +29,7 @@ const userTwo = {
     }]
 }
 
+// Task 1 test information 
 const taskOne = {
     _id: new mongoose.Types.ObjectId(),
     description: 'first task',
@@ -35,6 +38,7 @@ const taskOne = {
     owner: userOneId
 }
 
+// Task 2 test information 
 const taskTwo = {
     _id: new mongoose.Types.ObjectId(),
     description: 'second task',
@@ -43,6 +47,7 @@ const taskTwo = {
     owner: userOneId
 }
 
+// Task 3 test information 
 const taskThree = {
     _id: new mongoose.Types.ObjectId(),
     description: 'third task',
@@ -52,15 +57,16 @@ const taskThree = {
 }
 
 const setupDatabase = async () => {
-        // delete all users to wipe database for testing
+
+        // delete all users in test database to wipe database for testing
         await User.deleteMany();
         await Task.deleteMany();
 
-        // create our test user
+        // create our test user in test database
         await new User(userOne).save();
         await new User(userTwo).save();
 
-        // create our tasks
+        // create our test tasks in test database
         await new Task(taskOne).save();
         await new Task(taskTwo).save();
         await new Task(taskThree).save();

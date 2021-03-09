@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const config = require('./../../config/config');
 
+// Our authorization middleware that runs 
+// before an endpoint is fully called
 const auth = async (request, response,  next) => {
     try {
         // Get the token from the header

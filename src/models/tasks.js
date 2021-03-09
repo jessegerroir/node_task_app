@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
+// Schema for the Task table
 const taskSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -19,7 +19,8 @@ const taskSchema = new mongoose.Schema({
         default: false,
         minLength: 3
     },
-    owner: { // creates a relationship between task and the user
+    // creates a foreign key between task and the user
+    owner: { 
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
@@ -31,15 +32,3 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema);
 
 module.exports = Task;
-
-// const newTask = new Task({
-//     name: 'Do coureses 222',
-//     description: 'javascript courses',
-//     completed: false
-// });
-
-// newTask.save().then((obj) => {
-//     console.log(obj);
-// }).catch((error) => {
-//     console.log(error);
-// });
