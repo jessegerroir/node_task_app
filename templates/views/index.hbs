@@ -1,28 +1,244 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Weather</title>
+        <title>Task Manager</title>
         <link rel="icon" href="/images/weather.png">
         <link rel="stylesheet" href="/css/styles.css">
+
     </head>
     <body>
         <div class="main-content">
-            {{>header}}
-            <p>Use this site to get your weather</p>
-        
-            <form>
-                <input placeholder="Enter your city">
-                <button>Search</button>
-            </form>
 
-            <p id="message-1"></p>
-            <p id="message-2"></p>
+            <h1>Task Manager API</h1>
+
+            <p>This is a simple interface to test and use the API. Click the buttons to different actions.</p>
+
+            
+            <div class='endpoint' id='create-new-account'>
+                <h4>Create New Account</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="name">Name:</label>
+                        <input id='create-new-account-input-name'type="text" name="name" required size="10" value="Jay">
+                        <label for="age">Age:</label>
+                        <input id='create-new-account-input-age'type="text" name="age" size="10" value="32">
+                        <label for="email">Email:</label>
+                        <input id='create-new-account-input-email' type="text" name="email" required size="10" value="fake@email.com">
+                        <label for="password">Password:</label>
+                        <input id='create-new-account-input-password' type="text" name="password" required size="10" value="pass123!!!">
+                    </div>
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <div class='action'>
+                    <button id="create-new-account-button">Create</button>
+                </div>    
+            </div>
+
+            
+            <div class='endpoint' id='login-account'>
+                <h4>Login Account</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="email">Email:</label>
+                        <input id='login-account-input-email' type="text" name="email" required minlength="4" maxlength="80" size="10" value="fake@email.com">
+                        <label for="password">Password:</label>
+                        <input id='login-account-input-password' type="text" name="password" required minlength="4" maxlength="80" size="10" value="pass123!!!">
+                    </div>    
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id="login-account-button">Login</button>
+                </div>  
+            </div>
+
+            
+            <div class='endpoint' id='get-account'>
+                <h4>View Account Information</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                    </div>  
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id="get-account-button">View</button>
+                </div>                    
+            </div>
+
+            
+            <div class='endpoint' id='update-account'>
+                <h4>Update Account Information</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="name">Name:</label>
+                        <input id='update-account-input-name' type="text" name="name" size="10">
+                        <label for="age">Age:</label>
+                        <input id='update-account-input-age' type="text" name="age" size="10">
+                        <label for="email">Email:</label>
+                        <input id='update-account-input-email' type="text" name="email" size="10">
+                    </div> 
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id="update-account-button">Update</button>
+                </div>    
+            </div>
+
+            
+            {{!-- <div class='endpoint' id='upload-avatar'>
+                <h4>Upload Avatar</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <input id="upload-avatar-image" type="file" style="display:none"/> 
+                    </div>
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='upload-avatar-button'>Upload</button>
+                </div>     
+            </div>
+
+            
+            <div class='endpoint' id='delete-avatar'>
+                <h4>Delete Avatar</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                    </div>  
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='delete-avatar-button'>Delete</button>
+                </div>  
+            </div> --}}
+
+            
+            <div class='endpoint' id='logout-account'>
+                <h4>Logout Account</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="email">Email:</label>
+                        <input id='logout-account-input-email' type="text" name="email" required minlength="4" maxlength="80" size="10" value="fake@email.com">
+                        <label for="password">Password:</label>
+                        <input id='logout-account-input-password' type="text" name="password" required minlength="4" maxlength="80" size="10" value="pass123!!!">
+                    </div>    
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <div class='action'>
+                    <button id='logout-account-button'>Logout</button>
+                </div>  
+            </div>
+
+            
+            <div class='endpoint' id='delete-account'>
+                <h4>Delete Account</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                    </div>
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='delete-account-button'>Delete</button>
+                </div>   
+            </div>
+
+            {{!-- -------------------------------------------------- --}}
+
+            
+            <div class='endpoint' id='create-task'>
+                <h4>Create Task</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="name">Name:</label>
+                        <input id='create-task-input-name'type="text" name="name" required minlength="4" maxlength="80" size="10" value="Jay">
+                        <label for="description">Description:</label>
+                        <input id='create-task-input-description' type="text" name="description" required minlength="4" maxlength="80" size="10" value="fake@email.com">
+                        <label for="completed">Completed:</label>
+                        <input id='create-task-input-completed' type="text" name="completed" required minlength="4" maxlength="80" size="10" value="pass123!!!">
+                    </div>    
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='create-task-button'>Create</button>
+                </div>  
+            </div>
+
+            
+            <div class='endpoint' id='get-task'>
+                <h4>View Assigned Tasks</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                    </div>      
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='get-task-button'>View</button>
+                </div>
+            </div>
+
+            
+            <div class='endpoint' id='update-task'>
+                <h4>Update Task</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="id">Id:</label>
+                        <input id='update-task-input-id'type="text" name="id" required minlength="0" maxlength="80" size="10">
+                        <label for="description">Description:</label>
+                        <input id='update-task-input-description' type="text" name="description" required minlength="4" maxlength="80" size="10">
+                        <label for="completed">Completed:</label>
+                        <input id='update-task-input-completed' type="text" name="completed" required minlength="4" maxlength="80" size="10">
+                    </div>    
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='update-task-button'>Update</button>
+                </div> 
+            </div>
+
+            
+            <div class='endpoint' id='delete-task'>
+                <h4>Delete Task</h4>
+                <div class='input-output'>
+                    <div class='input'>
+                        <label for="id">Id:</label>
+                        <input id='delete-task-input-id'type="text" name="id" required minlength="0" maxlength="80" size="10">
+                    </div>    
+                    <div class='output'>
+                        <textarea></textarea>
+                    </div>
+                </div>    
+                <div class='action'>
+                    <button id='delete-task-button'>Delete</button>
+                </div> 
+            </div>
+
 
         </div>
         
         {{>footer}}
-
-        <script src="/js/app.js"></script>
     </body>
+
+
+    <script type="text/javascript" src="js/app.js"></script>
 
 </html>   

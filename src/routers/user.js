@@ -1,29 +1,11 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
-const multer = require('multer');
 
 const imageProcessing = require('./../utils/image_processing');
+const { response } = require('express');
 
 const router = new express.Router();
-
-// const upload = multer({
-//     limits: {
-//         fileSize: 1000000
-//     },
-//     fileFilter(request, file, callback) {
-
-//         // check file extension
-//         if (!file.originalname.match(/\.(jpeg|jpg|png)$/)) {
-//             // send back error
-//             return callback(new Error('Please upload a jpg, jpeg, or png image'));
-//         }
-
-//         // upload went successful
-//         return callback(undefined, true);
-//     }
-// });
-
 
 // Create user 
 router.post('/users', async (request, response) => {
@@ -41,11 +23,14 @@ router.post('/users', async (request, response) => {
 });
 
 // Login User
-router.get('/users/login', async (request, response) => {
+router.post('/users/login', async (request, response) => {
     try {
         const user = await User.findByCredentials(request.body.email, request.body.password);
         const token = await user.generateAuthToken();
         response.send({ user, token});
+
+        // response.render('dashboard', { user, token } );
+
     } catch (error) {
         response.status(400).send(error);
     }
@@ -90,6 +75,7 @@ router.get('/users/me', auth, async (request, response) => {
 
 // Update user info 
 router.patch('/users/me', auth, async (request, response) => {
+    
     const updates = Object.keys(request.body);
     const allowedUpdates = ['name', 'email', 'password'];
     const isValid = updates.every((update) => allowedUpdates.includes(update));

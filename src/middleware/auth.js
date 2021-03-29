@@ -6,6 +6,7 @@ const config = require('./../../config/config');
 // before an endpoint is fully called
 const auth = async (request, response,  next) => {
     try {
+
         // Get the token from the header
         const token = request.header('Authorization').replace('Bearer ', '');
         
