@@ -12,7 +12,7 @@ document.querySelector('#create-new-account-button')
     // Define input
     const input = {
         name:       document.querySelector('#create-new-account-input-name').value,
-        age:        document.querySelector('#update-account-input-age').value,
+        age:        document.querySelector('#create-new-account-input-age').value,
         email:      document.querySelector('#create-new-account-input-email').value,
         password:   document.querySelector('#create-new-account-input-password').value
     };
@@ -29,12 +29,11 @@ document.querySelector('#create-new-account-button')
     // Call the action
     fetch('/users', header).then( (response) => {
         response.json().then(data => {
-            if (data.errors || data.error || data.errmsg || data.statusText) {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 output.value = JSON.stringify(data);
                 authToken = data.token;
-                console.log(authToken);
             }
         })
     });
@@ -68,7 +67,7 @@ document.querySelector('#login-account-button')
     // Call the action
     fetch('/users/login', header).then( (response) => {
         response.json().then(data => {
-            if (data.errors || data.error || data.errmsg || data.statusText) {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 authToken = data.token;
@@ -98,7 +97,7 @@ document.querySelector('#get-account-button')
     // Call the action
     fetch('/users/me', header).then( (response) => {
         response.json().then(data => {
-            if (data.errors || data.error || data.errmsg || data.statusText) {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 output.value = JSON.stringify(data);
@@ -145,10 +144,7 @@ document.querySelector('#update-account-button')
     // Call the action
     fetch('/users/me', header).then( (response) => {
         response.json().then(data => {
-
-            console.log(response);
-
-            if (data.errors || data.error || data.errmsg || data.statusText) {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 output.value = JSON.stringify(data);
@@ -230,10 +226,17 @@ document.querySelector('#logout-account-button')
     const output = document.querySelector('#logout-account .output textarea');
     output.value = '';
 
+    // Define input
+    const input = {
+        email:      document.querySelector('#logout-account-input-email').value,
+        password:   document.querySelector('#logout-account-input-password').value
+    };
+
     const header = {
-        method: 'GET', 
+        method: 'POST', 
         body: JSON.stringify(input),
         headers: {
+            'Authorization': 'Bearer ' + authToken,
             'Content-Type': 'application/json',
             'Content-Length': input.length
         }
@@ -242,7 +245,7 @@ document.querySelector('#logout-account-button')
     // Call the action
     fetch('/users/logout', header).then( (response) => {
         response.json().then(data => {
-            if (data.errors || data.error || data.errmsg || data.statusText) {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 output.value = JSON.stringify(data);
@@ -261,18 +264,17 @@ document.querySelector('#delete-account-button')
     output.value = '';
 
     const header = {
-        method: 'DELETE', 
-        body: JSON.stringify(input),
+        method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': input.length,
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
     };
 
     // Call the action
     fetch('/users/me', header).then( (response) => {
         response.json().then(data => {
-            if (data.errors || data.error || data.errmsg || data.statusText) {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 output.value = JSON.stringify(data);
@@ -284,3 +286,151 @@ document.querySelector('#delete-account-button')
 
 
 // -------------------------------------
+
+document.querySelector('#create-task-button')
+.addEventListener('click', (event) => {
+    
+    // Get output texbox to display results
+    const output = document.querySelector('#create-task .output textarea');
+    output.value = '';
+
+    // Define input
+    const input = {
+        name:           document.querySelector('#create-task-input-name').value,
+        description:    document.querySelector('#create-task-input-description').value,
+        completed:      document.querySelector('#create-task-input-completed').value
+    };
+
+    const header = {
+        method: 'POST', 
+        body: JSON.stringify(input),
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json',
+            'Content-Length': input.length
+        }
+    };
+
+    // Call the action
+    fetch('/tasks', header).then( (response) => {
+        response.json().then(data => {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
+                output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
+            } else{
+                output.value = JSON.stringify(data);
+            }
+        })
+    });
+
+});
+
+
+document.querySelector('#get-task')
+.addEventListener('click', (event) => {
+
+    // Get output texbox to display results
+    const output = document.querySelector('#get-task .output textarea');
+    output.value = '';
+
+    const header = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken
+        }
+    };
+
+    // Call the action
+    fetch('/tasks', header).then( (response) => {
+        response.json().then(data => {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
+                output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
+            } else{
+                output.value = JSON.stringify(data);
+            }
+        })
+    });
+
+});
+
+
+document.querySelector('#update-task-button')
+.addEventListener('click', (event) => {
+
+    // Get output texbox to display results
+    const output = document.querySelector('#update-task .output textarea');
+    output.value = '';
+
+    const input = {};
+    
+    
+
+    const description = document.querySelector('#update-task-input-description').value
+    if (description) {
+        input.description = description
+    }
+
+    const completed = document.querySelector('#update-task-input-completed').value
+    if (completed) {
+        input.completed = completed
+    }
+
+    const header = {
+        method: 'PATCH', 
+        body: JSON.stringify(input),
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json',
+            'Content-Length': input.length
+        }
+    };
+
+    const id = document.querySelector('#update-task-input-id').value
+
+    // Call the action
+    fetch('/tasks/' + id, header).then( (response) => {
+        response.json().then(data => {
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
+                output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
+            } else{
+                output.value = JSON.stringify(data);
+            }
+        })
+    });
+
+});
+
+
+document.querySelector('#delete-task-button')
+.addEventListener('click', (event) => {
+
+    // Get output texbox to display results
+    const output = document.querySelector('#delete-task .output textarea');
+    output.value = '';
+
+    const header = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + authToken
+        }
+    };
+
+    const id = document.querySelector('#delete-task-input-id').value
+
+    // Call the action
+    fetch('/tasks/' + id, header).then( (response) => {
+
+        console.log(response);
+
+        response.json().then(data => {
+            
+            console.log(data);
+            
+            if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
+                output.value = data.error ?? data.errors ?? data.message ?? data.errmsg ?? data.statusText;
+            } else{
+                output.value = JSON.stringify(data);
+            }
+        })
+    });
+
+});

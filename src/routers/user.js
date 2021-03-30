@@ -27,7 +27,7 @@ router.post('/users/login', async (request, response) => {
     try {
         const user = await User.findByCredentials(request.body.email, request.body.password);
         const token = await user.generateAuthToken();
-        response.send({ user, token});
+        response.status(200).send({ user, token});
 
         // response.render('dashboard', { user, token } );
 
@@ -43,6 +43,8 @@ router.get('/users/logoutAll', async (request, response) => {
         request.user.tokens = [];
         // save user
         await request.user.save();
+
+        response.status(200).send(request.user)
     } catch (error) {
         response.status(400).send(error);
     }
@@ -61,9 +63,9 @@ router.post('/users/logout', auth, async (request, response) => {
         });
         // save the user so the token is removed
         await request.user.save();
-        response.send(200);
+        response.status(200).send({message:"Sucessfully signed out!"});
     } catch (error) {
-        response.send(500).send();
+        response.status(500).send(error);
     }
 });
 
@@ -102,7 +104,7 @@ router.delete('/users/me', auth, async (request, response) => {
         await request.user.remove();
         response.send(request.user);
     } catch (error) {
-        response.status(500).send();
+        response.status(500).send(error);
     }
 });
 
@@ -121,7 +123,7 @@ router.post('/users/me/avatar', auth, imageProcessing.upload.single('avatar'), a
     //save user
     await request.user.save();
 
-    response.send();
+    response.status(200).send({});
 }, (error, request, result, next) => { // this handles uncaught errors
     result.status(400).send({ error: error.message })
 });
@@ -149,7 +151,7 @@ router.get('/users/:id/avatar', async (request, response) => {
         response.send(user.avatar);
 
     } catch (error) {
-        response.status(404).send();
+        response.status(404).send(error);
     }
 })
 

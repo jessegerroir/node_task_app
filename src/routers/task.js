@@ -114,19 +114,21 @@ router.patch('/tasks/:id', auth, async (request, response) => {
 });
 
 
-router.delete('/tasks/:id', auth, async (result, response) => {
+router.delete('/tasks/:id', auth, async (request, response) => {
     try {
         // search task by user
-        const task = Task.findOneAndDelete({
-            _id: request.params.delete,
-            ownder: request.user._id
+        const task = await Task.remove({
+            _id: request.params.id,
+            owner: request.user._id
         });
-        if (!task) {
-            return response.status(404).send();
-        }
-        response.send(user);
+
+        // if (task) {
+        //     return response.status(404).send({message: "Task has already been deleted"});
+        // }
+
+        response.status(200).send({message: "Task deleted"});
     } catch (error) {
-        response.status(500).send();
+        response.status(500).send(error);
     }
 })
 
