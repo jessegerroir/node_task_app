@@ -1,6 +1,6 @@
 # Node Task Application
 
-A simple RESTful API built using node.js and MongoDb. It includes proper authorization and uses javascript asynchronously. 
+A simple RESTful API built using node using express.js and MongoDb. It includes proper authorization and uses javascript asynchronously. 
 
 It has 10 endpoints:
 
