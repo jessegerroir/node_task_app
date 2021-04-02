@@ -32,7 +32,7 @@ document.querySelector('#create-new-account-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
                 authToken = data.token;
             }
         })
@@ -71,7 +71,7 @@ document.querySelector('#login-account-button')
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
                 authToken = data.token;
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -100,7 +100,7 @@ document.querySelector('#get-account-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -115,7 +115,8 @@ document.querySelector('#update-account-button')
     output.value = '';
 
     const input = {};
-    
+
+
     const name = document.querySelector('#update-account-input-name').value
     if (name) {
         input.name = name;
@@ -129,6 +130,11 @@ document.querySelector('#update-account-button')
     const email = document.querySelector('#update-account-input-email').value
     if (email) {
         input.email = email
+    }
+
+    if (!name && !age && !email) {
+        output.value = 'Please specify some data to update';
+        return;
     }
 
     const header = {
@@ -147,7 +153,7 @@ document.querySelector('#update-account-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -248,7 +254,7 @@ document.querySelector('#logout-account-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -277,7 +283,7 @@ document.querySelector('#delete-account-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -317,7 +323,7 @@ document.querySelector('#create-task-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -345,7 +351,7 @@ document.querySelector('#get-task')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -392,7 +398,7 @@ document.querySelector('#update-task-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });
@@ -428,7 +434,8 @@ document.querySelector('#delete-task-button')
             if (data.errors || data.error || data.errmsg || data.statusText || data.message) {
                 output.value = data.error ?? data.errors ?? data.message ?? data.errmsg ?? data.statusText;
             } else{
-                output.value = JSON.stringify(data);
+                const obj = 
+                output.value = JSON.stringify(data, undefined, 4);
             }
         })
     });

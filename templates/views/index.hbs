@@ -11,11 +11,12 @@
 
             <h1>Task Manager API</h1>
 
-            <p>This is a simple interface to test and use the API. Click the buttons to different actions.</p>
+            <p>This is a simple interface to test and use the API. Click the buttons to different actions. Most of them require you to be authenticated by logging in first.</p>
 
             
             <div class='endpoint' id='create-new-account'>
                 <h4>Create New Account</h4>
+                <p>POST: /users/</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="name">Name:</label>
@@ -39,6 +40,7 @@
             
             <div class='endpoint' id='login-account'>
                 <h4>Login Account</h4>
+                <p>POST: /users/login</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="email">Email:</label>
@@ -58,6 +60,7 @@
             
             <div class='endpoint' id='get-account'>
                 <h4>View Account Information</h4>
+                <p>GET: /users/me</p>
                 <div class='input-output'>
                     <div class='input'>
                     </div>  
@@ -73,6 +76,7 @@
             
             <div class='endpoint' id='update-account'>
                 <h4>Update Account Information</h4>
+                <p>PATCH: /users/me</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="name">Name:</label>
@@ -125,6 +129,7 @@
             
             <div class='endpoint' id='logout-account'>
                 <h4>Logout Account</h4>
+                <p>POST: /users/logout</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="email">Email:</label>
@@ -144,6 +149,7 @@
             
             <div class='endpoint' id='delete-account'>
                 <h4>Delete Account</h4>
+                <p>DELETE: /users/me</p>
                 <div class='input-output'>
                     <div class='input'>
                     </div>
@@ -161,6 +167,7 @@
             
             <div class='endpoint' id='create-task'>
                 <h4>Create Task</h4>
+                <p>POST: /tasks</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="name">Name:</label>
@@ -182,6 +189,7 @@
             
             <div class='endpoint' id='get-task'>
                 <h4>View Assigned Tasks</h4>
+                <p>GET: /tasks</p>
                 <div class='input-output'>
                     <div class='input'>
                     </div>      
@@ -197,6 +205,7 @@
             
             <div class='endpoint' id='update-task'>
                 <h4>Update Task</h4>
+                <p>PATCH: /tasks/:id</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="id">Id:</label>
@@ -218,6 +227,7 @@
             
             <div class='endpoint' id='delete-task'>
                 <h4>Delete Task</h4>
+                <p>DELETE: /tasks/:id</p>
                 <div class='input-output'>
                     <div class='input'>
                         <label for="id">Id:</label>
